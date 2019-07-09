@@ -6,3 +6,5 @@ Gemfile.lock
 vendor
 .bundle
 *.swp
+*.o
+main_c

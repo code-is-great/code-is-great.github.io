@@ -10,7 +10,7 @@ INDENT = indent
 
 INCPATH = -I./
 
-LDFLAGS = -lncurses -static
+LDFLAGS = -lncurses
 
 CFLAGS = -Wall -Wshadow -DDISPLAY -g
 
