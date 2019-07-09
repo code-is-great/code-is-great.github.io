@@ -1,0 +1,103 @@
+PROGRAM = main_t
+
+.PHONY: target 
+target: $(PROGRAM)
+
+CC = g++ 
+LD = g++ 
+INDENT = indent
+
+INCPATH = -I./ 
+
+CFLAGS = -Wall -Wshadow
+
+HEADERS = ./vm_include.h \
+	./controlunit.h \
+	./byte.h \
+	./port.h \
+	./flag.h \
+	./register.h \
+	./reg8bit.h \
+	./reg16bit.h \
+	./ram.h \
+	./stack85.h \
+	./parser.h \
+	./mnemonic_decoder.h \
+	./inst_decoder.h \
+	./8085microprocessor.h
+
+SOURCES = ./controlunit.cc \
+	./byte.cc \
+	./port.cc \
+	./flag.cc \
+	./register.cc \
+	./reg8bit.cc \
+	./reg16bit.cc \
+	./ram.cc \
+	./stack85.cc \
+	./parser.cc \
+	./mnemonic_decoder.cc \
+	./inst_decoder.cc \
+	./8085microprocessor.cc \
+	./main.cc
+
+OBJECTS = ./controlunit.o  ./byte.o ./port.o ./flag.o \
+	./register.o ./reg8bit.o ./reg16bit.o ./ram.o \
+	./stack85.o ./parser.o ./mnemonic_decoder.o \
+	./inst_decoder.o ./8085microprocessor.o ./main.o
+
+#$(INDENT) $(SOURCES) $(HEADERS)
+
+controlunit.o : controlunit.cc controlunit.h inst_decoder.o vm_include.h
+	$(CC) $(INCPATH) $(CFLAGS) -c controlunit.cc
+	
+byte.o : byte.cc byte.h vm_include.h
+	$(CC) $(INCPATH) $(CFLAGS) -c byte.cc
+
+port.o : port.cc port.h byte.o
+	$(CC) $(INCPATH) $(CFLAGS) -c port.cc
+
+flag.o : flag.cc flag.h byte.o
+	$(CC) $(INCPATH) $(CFLAGS) -c flag.cc
+
+register.o : register.cc register.h byte.o
+	$(CC) $(INCPATH) $(CFLAGS) -c register.cc
+
+reg8bit.o : reg8bit.cc reg8bit.h register.o flag.o
+	$(CC) $(INCPATH) $(CFLAGS) -c reg8bit.cc
+
+reg16bit.o : reg16bit.cc reg16bit.h register.o
+	$(CC) $(INCPATH) $(CFLAGS) -c reg16bit.cc
+
+ram.o : ram.cc ram.h byte.o 
+	$(CC) $(INCPATH) $(CFLAGS) -c ram.cc
+
+stack85.o : stack85.cc stack85.h vm_include.h
+	$(CC) $(INCPATH) $(CFLAGS) -c stack85.cc
+
+mnemonic_decoder.o : mnemonic_decoder.cc mnemonic_decoder.h vm_include.h
+	$(CC) $(INCPATH) $(CFLAGS) -c mnemonic_decoder.cc
+
+parser.o : parser.cc parser.h mnemonic_decoder.o \
+	ram.o reg16bit.o vm_include.h
+	$(CC) $(INCPATH) $(CFLAGS) -c parser.cc
+
+inst_decoder.o : inst_decoder.cc inst_decoder.h ram.o stack85.o \
+	reg16bit.o reg8bit.o port.o vm_include.h
+	$(CC) $(INCPATH) $(CFLAGS) -c inst_decoder.cc
+
+8085microprocessor.o : 8085microprocessor.cc 8085microprocessor.h \
+	controlunit.o port.o flag.o reg8bit.o reg16bit.o \
+	parser.o mnemonic_decoder.o ram.o stack85.o 
+	$(CC) $(INCPATH) $(CFLAGS) -c 8085microprocessor.cc
+	
+main.o : main.cc 8085microprocessor.o
+	$(CC) $(INCPATH) $(CFLAGS) -c main.cc
+
+$(PROGRAM) : $(OBJECTS)
+	$(LD) $(OBJECTS) -o $(PROGRAM)
+
+.PHONY:clean 
+clean:
+	rm -f $(OBJECTS)
+	rm -f core

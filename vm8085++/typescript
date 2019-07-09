@@ -1,0 +1,67 @@
+Script started on Sat Jun  9 19:13:36 2001
+pankaj@ashoka:~/work/cpp/vm8085$ make
+g++  ./element.o ./button.o ./label.o ./window.o ./grid.o ./mp_sheet.o ./display.o ./controlunit.o  ./byte.o ./port.o ./flag.o ./register.o ./reg8bit.o ./reg16bit.o ./ram.o ./stack85.o ./parser.o ./mnemonic_decoder.o ./inst_decoder.o ./8085microprocessor.o ./main.o -o main_c -lncurses 
+./button.o: In function `__malloc_alloc_template<0>::deallocate(void *, unsigned int)':
+/usr/lib/gcc-lib/i386-linux/2.95.4/../../../../include/g++-3/std/bastring.h(.bss+0x0): multiple definition of `debug'
+./element.o(.bss+0x0):/home/pankaj/work/cpp/vm8085/vm_include.h: first defined here
+./label.o: In function `__malloc_alloc_template<0>::deallocate(void *, unsigned int)':
+/usr/lib/gcc-lib/i386-linux/2.95.4/../../../../include/g++-3/std/bastring.h(.bss+0x0): multiple definition of `debug'
+./element.o(.bss+0x0):/home/pankaj/work/cpp/vm8085/vm_include.h: first defined here
+./window.o: In function `__malloc_alloc_template<0>::deallocate(void *, unsigned int)':
+/usr/lib/gcc-lib/i386-linux/2.95.4/../../../../include/g++-3/std/bastring.h(.bss+0x0): multiple definition of `debug'
+./element.o(.bss+0x0):/home/pankaj/work/cpp/vm8085/vm_include.h: first defined here
+./grid.o: In function `__malloc_alloc_template<0>::deallocate(void *, unsigned int)':
+/usr/lib/gcc-lib/i386-linux/2.95.4/../../../../include/g++-3/std/bastring.h(.bss+0x0): multiple definition of `debug'
+./element.o(.bss+0x0):/home/pankaj/work/cpp/vm8085/vm_include.h: first defined here
+./mp_sheet.o: In function `__malloc_alloc_template<0>::deallocate(void *, unsigned int)':
+/usr/lib/gcc-lib/i386-linux/2.95.4/../../../../include/g++-3/std/bastring.h(.bss+0x0): multiple definition of `debug'
+./element.o(.bss+0x0):/home/pankaj/work/cpp/vm8085/vm_include.h: first defined here
+./display.o: In function `__malloc_alloc_template<0>::deallocate(void *, unsigned int)':
+/usr/lib/gcc-lib/i386-linux/2.95.4/../../../../include/g++-3/std/bastring.h(.bss+0x0): multiple definition of `debug'
+./element.o(.bss+0x0):/home/pankaj/work/cpp/vm8085/vm_include.h: first defined here
+./controlunit.o: In function `__malloc_alloc_template<0>::deallocate(void *, unsigned int)':
+/usr/lib/gcc-lib/i386-linux/2.95.4/../../../../include/g++-3/std/bastring.h(.bss+0x0): multiple definition of `debug'
+./element.o(.bss+0x0):/home/pankaj/work/cpp/vm8085/vm_include.h: first defined here
+./byte.o: In function `basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0> >::assign(char const *, unsigned int)':
+/usr/lib/gcc-lib/i386-linux/2.95.4/../../../../include/g++-3/std/bastring.h(.bss+0x0): multiple definition of `debug'
+./element.o(.bss+0x0):/home/pankaj/work/cpp/vm8085/vm_include.h: first defined here
+./port.o: In function `int __lexicographical_compare_3way<signed char const *, signed char const *>(signed char const *, signed char const *, signed char const *, signed char const *)':
+/usr/lib/gcc-lib/i386-linux/2.95.4/../../../../include/g++-3/stl_algobase.h(.bss+0x0): multiple definition of `debug'
+./element.o(.bss+0x0):/home/pankaj/work/cpp/vm8085/vm_include.h: first defined here
+./flag.o: In function `int __lexicographical_compare_3way<signed char const *, signed char const *>(signed char const *, signed char const *, signed char const *, signed char const *)':
+/usr/lib/gcc-lib/i386-linux/2.95.4/../../../../include/g++-3/stl_algobase.h(.bss+0x0): multiple definition of `debug'
+./element.o(.bss+0x0):/home/pankaj/work/cpp/vm8085/vm_include.h: first defined here
+./register.o: In function `mpu::Byte type_info function':
+/home/pankaj/work/cpp/vm8085/vm_include.h(.bss+0x0): multiple definition of `debug'
+./element.o(.bss+0x0):/home/pankaj/work/cpp/vm8085/vm_include.h: first defined here
+./reg8bit.o: In function `basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0> >::assign(char const *, unsigned int)':
+/usr/lib/gcc-lib/i386-linux/2.95.4/../../../../include/g++-3/std/bastring.h(.bss+0x0): multiple definition of `debug'
+./element.o(.bss+0x0):/home/pankaj/work/cpp/vm8085/vm_include.h: first defined here
+./reg16bit.o: In function `mpu::Reg16Bit type_info function':
+/home/pankaj/work/cpp/vm8085/vm_include.h(.bss+0x0): multiple definition of `debug'
+./element.o(.bss+0x0):/home/pankaj/work/cpp/vm8085/vm_include.h: first defined here
+./ram.o: In function `mpu::Byte * __copy<mpu::Byte *, mpu::Byte *, int>(mpu::Byte *, mpu::Byte *, mpu::Byte *, random_access_iterator_tag, int *)':
+/usr/lib/gcc-lib/i386-linux/2.95.4/../../../../include/g++-3/stl_alloc.h(.bss+0x0): multiple definition of `debug'
+./element.o(.bss+0x0):/home/pankaj/work/cpp/vm8085/vm_include.h: first defined here
+./stack85.o: In function `mpu::Byte * __copy<mpu::Byte *, mpu::Byte *, int>(mpu::Byte *, mpu::Byte *, mpu::Byte *, random_access_iterator_tag, int *)':
+/usr/lib/gcc-lib/i386-linux/2.95.4/../../../../include/g++-3/stl_algobase.h(.bss+0x0): multiple definition of `debug'
+./element.o(.bss+0x0):/home/pankaj/work/cpp/vm8085/vm_include.h: first defined here
+./parser.o: In function `__copy_dispatch<int const *, int *, __true_type>::copy(int const *, int const *, int *)':
+/usr/lib/gcc-lib/i386-linux/2.95.4/../../../../include/g++-3/stl_algobase.h(.bss+0x0): multiple definition of `debug'
+./element.o(.bss+0x0):/home/pankaj/work/cpp/vm8085/vm_include.h: first defined here
+./mnemonic_decoder.o: In function `_Rb_tree_iterator<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0> >, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0> > const &, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0> > const *>::_Rb_tree_iterator(_Rb_tree_iterator<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0> >, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0> > &, basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0> > *> const &)':
+/usr/lib/gcc-lib/i386-linux/2.95.4/../../../../include/g++-3/stl_set.h(.bss+0x1e0): multiple definition of `debug'
+./element.o(.bss+0x0):/home/pankaj/work/cpp/vm8085/vm_include.h: first defined here
+./inst_decoder.o: In function `int __lexicographical_compare_3way<signed char const *, signed char const *>(signed char const *, signed char const *, signed char const *, signed char const *)':
+/usr/lib/gcc-lib/i386-linux/2.95.4/../../../../include/g++-3/stl_algobase.h(.bss+0x0): multiple definition of `debug'
+./element.o(.bss+0x0):/home/pankaj/work/cpp/vm8085/vm_include.h: first defined here
+./8085microprocessor.o: In function `void destroy<basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0> > >(basic_string<char, string_char_traits<char>, __default_alloc_template<true, 0> > *)':
+/usr/lib/gcc-lib/i386-linux/2.95.4/../../../../include/g++-3/stl_construct.h(.bss+0x0): multiple definition of `debug'
+./element.o(.bss+0x0):/home/pankaj/work/cpp/vm8085/vm_include.h: first defined here
+./main.o: In function `__default_alloc_template<true, 0>::_Lock::_Lock(void)':
+/usr/lib/gcc-lib/i386-linux/2.95.4/../../../../include/g++-3/stl_alloc.h(.bss+0x0): multiple definition of `debug'
+./element.o(.bss+0x0):/home/pankaj/work/cpp/vm8085/vm_include.h: first defined here
+collect2: ld returned 1 exit status
+make: *** [main_c] Error 1
+pankaj@ashoka:~/work/cpp/vm8085$ exit
+Script done on Sat Jun  9 19:13:40 2001

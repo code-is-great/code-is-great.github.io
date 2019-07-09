@@ -1,0 +1,53 @@
+
+
+
+
+/* 	PUSH POP AT USER DEFINED LOCATION	*/	
+
+MVI B,ff
+MOV A,B
+MVI C,0f
+MVI D,05
+MOV E,B
+MOV H,C
+MVI L,39
+SPHL
+PUSH B
+PUSH D
+PUSH H
+PUSH PSW
+POP B
+POP D
+POP H
+POP PSW
+HLT
+
+
+
+Hex-Code
+--------
+06	(MVI B, 8-bit)
+ff
+78	(MOV A, B)
+0e	(MVI C, 8-bit)
+0f
+16	(MVI D, 8-bit)
+05
+58	(MOV E, B)
+61	(MOV H, C)
+2e	(MVI L, 8-bit)
+39
+f9	(SPHL)
+c5	(PUSH B)
+d5	(PUSH D)
+e5	(PUSH H)
+f5	(PUSH PSW)
+c1	(POP B)
+d1	(POP D)
+e1	(POP H)
+f1	(POP PSW)
+76	(HLT)
+
+
+
+/*---------------------------------------------*/

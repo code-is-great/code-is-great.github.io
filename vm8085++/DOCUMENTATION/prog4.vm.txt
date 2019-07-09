@@ -1,0 +1,32 @@
+
+
+
+
+/* 	OPERATION RELATED TO SUBROUTINE CALL	*/
+
+MVI B,ff
+CALL LABEL
+ADD B
+HLT
+NOP
+LABEL
+ADD D
+RET
+
+
+Hex-Code
+-------
+06	(MVI B, 8-bit)
+ff
+cd	(CALL 16-bit)
+
+two-byte address
+
+80	(ADD B)
+76	(HLT)
+00	(NOP)
+82	(ADD D)
+c9	(RET)
+
+
+/*--------------------------------------------*/

@@ -1,0 +1,26 @@
+
+
+
+
+/*	BACKWARD JMP 	*/
+
+MVI A,10
+LABEL
+MVI B,11
+JMP LABEL
+HLT
+
+
+Hex-Code
+--------
+3e	(MVI A, 8-bit)
+10
+06	(MVI B, 8-bit)
+11
+c3	(JMP 16-bit)
+
+two-byte address
+
+76	(HLT)
+
+/*---------------------*/

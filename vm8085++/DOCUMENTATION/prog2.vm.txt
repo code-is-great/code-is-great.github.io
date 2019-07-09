@@ -1,0 +1,33 @@
+
+
+
+
+/*	FORWARD JMP INSTRUCTION 	*/
+
+MVI A,10
+JMP LABEL
+MVI B,11
+LABEL
+MVI C,FF
+ADD C
+ADD B
+HLT
+
+
+Hex-Code
+-------
+3e	(MVI A, 8-bit)
+10
+c3	(JMP 16-bit)
+
+two-byte address
+
+06	(MVI B, 8-bit)
+11
+0e	(MVI C, 8-bit)
+ff
+81	(ADD C)
+80	(ADD B)
+76	(HLT)
+
+/*-------------------------------------*/

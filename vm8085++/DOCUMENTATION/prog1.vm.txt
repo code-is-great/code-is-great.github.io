@@ -1,0 +1,26 @@
+
+
+
+
+/* 	PROG1.VM TO CHECK MVI INSTRUCTION AND FLAG 	*/
+
+MVI A,ff
+MVI B,1
+ADD B
+ADD B
+ADD B
+HLT
+
+Hex-Code
+--------
+3e	(MVI A, 8-bit)
+ff
+06	(MVI B, 8-bit)
+01
+80	(ADD B)
+80	(ADD B)
+80	(ADD B)
+76	(HLT)
+
+
+/*-------------------------------------------------------/*

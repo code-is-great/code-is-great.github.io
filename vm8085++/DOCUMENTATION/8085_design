@@ -1,0 +1,530 @@
+EMULATION OF 8085
+==================
+
+HOW TO  RUN PROGRAM 
+================== 
+
+Compile  using make.   Modify the  Makefile according  to if  you want
+curses interface or  normal text interface. This depends  on the value
+of MODE variable in Makefile.
+
+DEVELOPERS
+==========
+
+Pankaj Jangid, Amit Mehra
+
+
+PLATFORM USED FOR THE PROJECT
+=============================
+
+The project  has been  implemented using the  GNU C++  2.95.4 20010319
+(Debian  prerelease)  on  Debian  GNU/Linux 2.2  (kernel  2.4.4).  For
+implementation  of the display  extensive use  of the  ncurses library
+utility has been made. Further,  the display has also been implemented
+in text mode using print commands.
+
+
+BRIEF DESCRIPTION OF THE PROJECT SPECIFICATION
+==============================================
+
+The aim of this  project is to emulate the working of  an 8085 chip on
+the  computer,   using  software.  For  this   purpose  the  following
+objectives are to be achieved:
+
+
+1) The application should be able  to execute programs written in 8085
+   assembly  language.  Assembly  language was  developed for  ease of
+   programming .   This language  consists of various  mnemonics which
+   are short and easily understandable to the human programmer.  Whole
+   programmes can be  written in mnemonics which are  converted to HEX
+   code using the  conversion tables. This hex code  is then converted
+   to binary code by special purpose Integrated chips. The binary code
+   so generated  can be given as an  input to the 8085  chip which can
+   then execute the code.
+
+	In the  emulator, test programs written in  mnemonics would be
+   stored  in files.  These  files would  then be  parsed by  a parser
+   which would  also convert  the files into  hex code. This  hex code
+   would constitute the input to the 8085 software chip.
+
+2) The  application will  have  to support  functionality  of all  the
+   registers.
+
+	The 8085 chip has six general purpose registers to store 8 bit
+   data. They  are identified  as B,  C, D, E,  H and  L. They  can be
+   combined as register  pairs - BC, DE and HL to  perform some 16 bit
+   operations. The programmer can use these registers to store or copy
+   data.
+
+  	The accumulator is  an 8 bit register that is  part of the ALU
+   of  the chip.  This is  used to  store 8  bit data  and  to perform
+   arithmetical and logical operations.  The result of an operation is
+   stored in the accumulator. It is also identified as register A.
+
+ 	In addition to  the accumulator the ALU consists  of five flip
+   flops which  are set or reset  after an operation  according to the
+   data  conditions  of  the  result  in  the  accumulator  and  other
+   registers. These are called Zero  (Z), Carry (CY), Sign (S), Parity
+   (P),  and  Auxiliary  Carry  (AC).  These flags  are  used  in  the
+   following manner.
+
+	a) Zero(Z) : The Zero flag is set to 1 when the result is zero
+				; otherwise it is reset.
+
+	b) Carry (CY) : If  an arithmetic operation results in a carry
+				the  flag  is set  ;  otherwise it  is
+				reset.
+
+	c) Sign  (S) : This flag is  set if the leftmost  digit of the
+				result  in a register  is equal  to 1;
+				otherwise it is reset.
+				
+	d) Parity (P) :  If the result has an even number  of 1s , the
+				flag is set; for an odd number of 1s ,
+				it is reset.
+				
+	e) Auxiliary Carry  (AC) : In an arithmetic  operation, when a
+				carry  is generated  by the  digit D3,
+				and passed to digit D4, the AC flag is
+				set. This flag  is used internally for
+				binary coded decimal operations.
+				
+	These five flip flops are implemented in the system of 8085 by
+   means  of an  eight bit  flag register,  which is  adjacent  to the
+   accumulator.  Five bit  positions out  of these  eight are  used to
+   store the output of these five  flip flops. The flags are stored in
+   a register  so that  the programmer can  examine these  flags (data
+   conditions) by accessing the register through an instruction. These
+   flags are of critical importance  in the decision making process of
+   the 8085  chip. The  flag register is  also alternatively  known as
+   Program Status Word register.
+
+	The Program Counter is a  16-bit register which deals with the
+   sequencing of execution of instructions. This register is basically
+   a memory pointer.  As memory locations have 16  bit addresses, this
+   register is also of 16 bits. The function of the program counter is
+   to point to the next memory location from where the next byte is to
+   be  fetched. When  a  byte (machine  code)  is fetched,  the PC  is
+   incremented by one to point to the next memory location.
+
+ 	The stack pointer  is also a 16-bit register and  is used as a
+   memory pointer.   It points to a  location in RAM,  which is called
+   the  stack. The  beginning of  the stack  is defined  by  loading a
+   16-bit  memory  address in  the  register.  This  register is  used
+   especially in the implementation of the subroutine calls.
+
+
+
+3) Most of the instructions of  the chip should also be implemented by
+   the system.
+
+	The instruction are classified into five functional categories
+	:
+
+	a)   Data  Transfer   (copy)  instructions.   This   group  of
+   instructions copies data from a location called a source to another
+   location called  a destination,  without modifying the  contents of
+   the source.
+
+	b)  Arithmetic  Instructions   :  These  instructions  perform
+   arithmetic operations such  as addition, subtraction, increment and
+   decrement.
+
+	c)  Logical operations  : These  instructions  perform various
+   logical operations with the contents of the accumulator such as OR,
+   XOR Rotate etc.
+
+	d) Branching Operations : This group of instructions alter the
+   sequence   of    program   execution   either    conditionally   or
+   unconditionally.egs. are Jump, Call, Return etc.
+
+	e)  Machine Control  Operations :  These  instructions control
+   machine functions such as Halt, Interrupt or Do Nothing.
+
+	An instruction  can be  divided into two  parts :- one  is the
+   task to  be performed, called  the operation code (opcode)  and the
+   second is the  data to be operated on  (operand).  The instructions
+   can be classified into three types based on their formats:
+
+	a) 1 byte instructions : This type includes the opcode and the
+   operand in the same byte. e.g.
+
+		MOV  C,A  =>  Copy  contents  of  the  accumulator  in
+		register A.
+
+	b) 2  byte instructions  : Here the  first byte  specifies the
+   opcode and the second byte specifies the operand. e.g.
+
+		MVI  A,data  =>  Load  an  8  bit  data  byte  in  the
+		accumulator.
+
+	c) 3  byte instructions  : Here the  first byte  specifies the
+   opcode and the following two bytes specify the 16 bit address. e.g.
+
+		JMP  2085H =>  Transfer  the program  sequence to  the
+		memory location 2085H.
+
+
+4) The application  has to be demonstrated using  simple programs that
+   can be executed on the emulator. For the purpose of demonstration a
+   suitable user-friendly display has to be designed.
+
+
+SCOPE OF THE PROJECT
+====================
+
+The scope  of the project  has been kept  strictly as per  the problem
+description.
+
+1) The  functionality  of  all  the registers  including  the  program
+   counter, stack pointer and the flag register has been implemented.
+
+2) The  function  of the  8085  microprocessor  kit  in accepting  the
+   programs written in standard  assembly language code, converting it
+   into hex and running the program has been implemented.
+
+3) All   the  5   functional   classes  of   instructions  have   been
+   covered.  Also  all the  three  types  of  instruction as  per  the
+   instruction format have been implemented. However, the complete set
+   of the instructions could not be implemented.
+
+4) The display  was initially  to be implemented  as a window  type of
+   interface developed using the  ncurses library. This has been done,
+   though further  improvements in  the interface is  possible through
+   addition of labels  for the flag names, adding  the display for the
+   ports  and adding  a moving  pointer  to show  movement of  program
+   counter. Also,  the stack pointer movement and  stack display could
+   be added to improve the demonstration utility.
+
+5) Display  has also  been implemented  in the  text mode  using print
+   statements. The design  of the system has been  slightly altered to
+   implement this. In  this case, the event signals  for the change of
+   state  are not  being sent  by  respective objects  to the  dispaly
+   object.   All the  display is  now  being done  by the  instruction
+   decoder object after execution of each instruction.
+
+6) The exceptions have not been implemented. The code can be made more
+   robust by adding exceptions whereever  required such as when a file
+   is given as input when no  file by that name exists. Also, the case
+   of JUMP  or CALL statements  when the appropriate flag  for program
+   counter movement is not found till the end of program file is a fit
+   case for  introducing exceptions. If memory  addresses greater than
+   16 bit addresses are used by the programmer, this program currently
+   makes use  of only  the 16 bit  part and disregards  the additional
+   part.  However, an  exception in  this  case would  also alert  the
+   programmer about the error he has made.
+
+7) It has been assumed that the  input given to the program will be in
+   the specified format.  The format is such that the arguments of the
+   instructions should be  separated by a comma but  without using any
+   spaces. e.g MOV A,B  and not MOV A, B ^ Also  , the instructions in
+   mnemonics should be in upper case only.
+
+    The input  program file  names should not  exceed 8  characters in
+    curses mode.  So it is advisable that the program should be in the
+    current directory (  so that complete path name  will not exceed 8
+    characters ).
+
+   
+
+CONCEPTUAL OBJECT ORIENTED DESIGN  
+=================================
+
+After the  classes were identified a  walk through was  done to refine
+the design.  The classes are shown underlined in the discussion below.
+
+WALK-THROUGH
+============
+
+1. Display is initialized.
+
+
+2. Initialize DataRegisters.
+
+
+3. Initialize Flags.
+
+
+4. Initialize RAM.
+
+
+5. Initialize ProgramCounter and StackPointer.
+
+
+6. User enters  program file name  and starting address of  program at
+   the Display  interface. And  value of starting  address is  used to
+   update value in ProgramCounter.
+
+7. User presses LoadButton to invoke the Parser.
+
+
+8. Parser reads input file using value of file name previously entered
+   in Display.
+
+9. Parser converts data in input file into hex using MnemonicDecoder.
+
+10. Converted hex data  is then stored in RAM.  The beginning position
+    of storage is got from ProgramCounter.
+
+11. RAM calls Display to update the display for RAM.
+
+12. User presses NextButton.
+
+13. InstructionDecoder gets value of  Instruction in hex from RAM. For
+    this it uses the address in the ProgramCounter.
+
+14. InstructionDecoder  updates the  Registers depending  on  value of
+    instructions. If required it invokes the Stack.
+
+15. If Stack  is invoked, it  will store the value  of ProgramCounter,
+    Accumulator and Flags in the Stack. Also the value of StackPointer
+    is suitably  updated. Stack  will call the  Display to  update the
+    display of Stack.
+
+16. DataRegisters and ControlRegisters call  the Display to update the
+    display of their status.
+
+17. When  the HALT instruction  is encountered  the InstructionDecoder
+    will do nothing.
+
+
+============================================================
+
+
+
+COMMENTS
+========
+
+    After  the   WALKTHROUGH  it  has  become  clear   that  there  is
+requirement of a Controller Object  to which the control will go after
+a command  Button on  the display is  pressed.  This will  enhance the
+seperation between the front end  and the back end of the application.
+Further code reuseablity and portablity across the platforms will also
+be strengthened. e.g.  if the application is to be ported to different
+platform only the front end (Display) will have to be re-implemented.
+
+
+
+
+Identified Classes and Collaborators
+====================================
+
+PARSER
+============================================================
+Serial Number 		Function		Colloborator
+
+1 			Read Input File 
+
+2 			Convert file from 	MnemonicDecoder	
+			mnemonics to hex code.  
+
+3 			Save converted file 	Display
+			in RAM 
+============================================================
+
+
+
+DISPLAY
+============================================================
+
+This class is an aggregation of  separate classes:
+LABLES
+
+Serial Number 		Function 		Collaborator
+
+1 			Display Registers 
+2 			Display Stack
+============================================================
+
+
+
+BUTTON
+============================================================
+
+Serial Number 		Function 		Collaborator
+
+1 			Loading of Program 	Control Unit
+2 			Execution of Program 	Control Unit
+============================================================
+
+
+
+8085 MEMORY
+============================================================
+
+This class is an abstract class and several classes are der-
+ived from it. This acts as a superclass for various types of
+register memory in 8085 processor.
+
+Serial Number 		Function 		Collaborator 
+
+1 			Resetting of registers 
+2 			Display Register values
+
+
+
+
+PORT
+============================================================
+This class is derived from 8085 MEMORY. It is a special type
+of 8 bit register used for interfacing between programmer a-
+nd the microprocessor. The programmer can feed values to the
+program whenever input is required by some instruction thro-
+ugh input port. The program will put values to the output
+port whenever an instruction requires the value to be outp-
+ut.
+
+Serial Number 		Function 		Collaborator
+
+1 			Get value from 
+			port register 
+2 			Put value in 
+			port register
+============================================================
+
+
+
+FLAG REGISTER
+============================================================
+This class is derived from 8085 MEMORY. The function of this
+class is to emulate the working of the flag register in 8085 
+processor.
+
+Serial Number 		Function 		Collaborator
+
+1 			Set Sign bit
+2 			Set Zero bit 
+3 			Set Carry bit 
+4 			Set Parity bit
+5 			Set Auxiliary Carry bit
+6 			Reset Sign bit
+7 			Reset Zero bit 
+8 			Reset Carry bit 
+9 			Reset Parity bit 
+10 			Reset Auxiliary bit
+============================================================
+
+
+REGISTER
+============================================================
+This class is derived from 8085 MEMORY. The function of this
+class is to act as a superclass of 8 bit and 16 bit registe-
+rs of 8085 processor. Hence no objects will be derived from 
+this class and its nature will be that of an abstract class.
+
+Serial Number 		Function 		Collaborator
+
+1 			Put value into register 
+2 			Get value from register
+3 			Perform Increment and 
+			Decrement instruction 
+			operation
+
+
+From this register class two subclasses are derived.
+
+
+8 BIT DATA REGISTER
+============================================================
+Function of this class is to serve as a class of all the 8 
+bit data registers.
+
+Serial Number 		Function 		Collaborator
+
+1 			Perform operation of 
+			functions of 
+			ADD and SUBTRACT
+============================================================
+
+
+
+16 BIT CONTROL REGISTER
+============================================================
+Function of this class is to serve as a class of all the 16 
+bit data registers.
+	
+There is no function other than the ones which are inherited
+from the superclass.
+
+
+CONTROL UNIT:
+============================================================
+The function of this class is to mimic the control unit of 
+the processor.
+
+Serial Number 		Function 		Collaborator
+
+	1		Load File		Parser
+
+	2		Next Instruction	Instruction 
+						Decoder	
+============================================================
+
+INSTRUCTION DECODER:
+===========================================================
+the function of this class is to take appropriate steps to 
+execute the instruction in hex
+
+Serial Number		Function		Collaborator
+
+	1		Execute			RAM, 8 bit registers
+						16 bit registers,
+						Stack
+=================================================================
+
+
+MNEMONIC DECODER:
+============================================================
+The function of this class is mainly to store intelligence 
+to covert mnemonics to hex code.
+
+Serial Number 		Function 		Collaborator
+
+1 			To convert mnemonics 
+			into hex code
+============================================================
+
+
+
+RAM
+============================================================
+
+The function of this class is to act as storage for the mic-
+roprocessor based system. The program files are stored in RAM
+before execution. It is initialized every time the system 
+boots up.  
+
+Serial Number 		Function 		Collaborator
+
+1 			To initialize itself
+2 			To put value into RAM
+3 			To get value from RAM
+============================================================
+
+
+       
+STACK
+============================================================
+The function of stack class is to encapsulate the properties
+and functions of a stack like push, pop, peep etc..
+
+Serial Number		Function		Collaborator
+
+1			push			RAM
+2 			pop			RAM
+3 			peep			RAM
+4			set value of stack	16 bit register 
+			pointer
+============================================================
+
+
+ANALYSIS OF THE DESIGN AND IMPROVEMENTS DURING IMPLEMENTATION
+=============================================================
+
+    While we have used the design suggested initially during the stage
+of mid term demonstration, an improvement in the design has come about
+by designing  the RAM as an  aggregation of bytes class.  This way the
+"put"  and  "get" functionality  of  the  bytes  class was  also  used
+directly in  the RAM. Conceptually too,  this was a better  idea as we
+were able to  group the RAM as  part of the memory module  of the 8085
+microprocessor.
